@@ -1,0 +1,21 @@
+# About
+This is a program to enable global hotkeys in LiveSplit running with Wine/Proton on Linux, similar to how the feature functions on Windows. It reads your keyboard inputs and sends corresponding commands to LiveSplit using its built-in TCP Server. You have to build it yourself currently, and most things are hard-coded for now, but it's still extremely simple, all things considered.
+
+# Building
+Simply clone the repo to a location of your choosing, then navigate to the directory in a terminal and run `make` in a terminal. If you want to edit the default key bindings, those are set in the `commandMaps` struct. The first key is the regular keybinding, and the second is a modifier key you need to hold down (e.g. Shift+KeypadMinus, the default for resetting splits). A modifier of `-1`  means the modifier is disabled. For a list of valid keys, reference the macros beginning with "KEY_" [here](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/input-event-codes.h).
+
+# Usage
+1. Enable the LiveSplit TCP server. You can either do this manually each time under `Control > Start TCP Server`, or you can enable `Settings > LiveSplit Server > Startup Behavior: > Start TCP Server` once and then forget about it.
+2. Set any hotkeys that you plan to use with this program to "None" in the LiveSplit settings. Otherwise you'll get double input while LiveSplit is in focus.
+3. Find your keyboard file descriptor located somewhere under `/dev/input`. It'll probably be easiest to find it under `/dev/input/by-id`, and will likely be a file ending with "kbd".
+4. Back in the directory where you cloned this repo, run the `ghk` binary with the full path to your keyboard file descriptor as the first argument, e.g. `./ghk /dev/input/by-id/your-keyboard-kbd`. You can optionally add a different host IP and port for the LiveSplit server as the second and thirst arguments if you need something other than the default, but if you're not sure, you don't.
+
+From here everything should just work. You can kill the program when you're done with Ctrl+C.
+
+# Plans
+
+In the future I'd like to make it so you don't need to build this yourself, plus I'd like to move the things that are hard coded, like the key bindings, to a separate config file. Oh, and it'd also be cool if you didn't have to go digging for your keyboard file descriptor manually.
+
+# Misc
+
+No LLMs were involved at any point in this project. Contributions are welcome so long as all code is 100% human written.
